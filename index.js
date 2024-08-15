@@ -61,11 +61,15 @@ async function run() {
 
         app.get("/LaptopsCount", async (req, res) => {
             const category = req.query.category;
+            const brand = req.query.brand;
 
             let query = {};
 
             if (category) {
-                query = { category: category };
+                query.category = category;
+            }
+            if (brand) {
+                query.brand = brand;
             }
 
             const count = await allLaptops.countDocuments(query);

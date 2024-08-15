@@ -38,8 +38,16 @@ async function run() {
         app.get("/laptops", async (req, res) => {
             const page = parseInt(req.query.page);
             const size = parseInt(req.query.size);
+            const category = req.query.category;
+
+            let query = {};
+            console.log(category);
+
+            if (category) {
+                query = { category: category };
+            }
             const result = await allLaptops
-                .find()
+                .find(query)
                 .skip(page * size)
                 .limit(size)
                 .toArray();

@@ -55,7 +55,15 @@ async function run() {
         });
 
         app.get("/LaptopsCount", async (req, res) => {
-            const count = await allLaptops.estimatedDocumentCount();
+            const category = req.query.category;
+
+            let query = {};
+
+            if (category) {
+                query = { category: category };
+            }
+
+            const count = await allLaptops.countDocuments(query);
             res.send({ count });
         });
 

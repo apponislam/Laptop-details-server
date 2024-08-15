@@ -40,8 +40,10 @@ async function run() {
             const size = parseInt(req.query.size);
             const category = req.query.category;
             const brand = req.query.brand;
+            const priceSort = req.query.priceSort;
 
             let query = {};
+            let sort = {};
             // console.log(category);
 
             if (category) {
@@ -51,8 +53,15 @@ async function run() {
                 query.brand = brand;
             }
 
+            if (priceSort === "lowtohigh") {
+                sort.price = 1;
+            } else if (priceSort === "hightolow") {
+                sort.price = -1;
+            }
+
             const result = await allLaptops
                 .find(query)
+                .sort(sort)
                 .skip(page * size)
                 .limit(size)
                 .toArray();

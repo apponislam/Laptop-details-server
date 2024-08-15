@@ -39,13 +39,18 @@ async function run() {
             const page = parseInt(req.query.page);
             const size = parseInt(req.query.size);
             const category = req.query.category;
+            const brand = req.query.brand;
 
             let query = {};
-            console.log(category);
+            // console.log(category);
 
             if (category) {
-                query = { category: category };
+                query.category = category;
             }
+            if (brand) {
+                query.brand = brand;
+            }
+
             const result = await allLaptops
                 .find(query)
                 .skip(page * size)

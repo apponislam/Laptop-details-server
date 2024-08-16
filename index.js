@@ -9,7 +9,7 @@ app.use(cors());
 app.use(express.json());
 
 app.get("/", function (req, res) {
-    res.send("Laptob Details server is running");
+    res.send("Laptop Details server is running");
 });
 
 // MongoDb

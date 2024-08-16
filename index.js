@@ -43,6 +43,8 @@ async function run() {
             const priceSort = req.query.priceSort;
             const minPrice = parseFloat(req.query.minPrice);
             const maxPrice = parseFloat(req.query.maxPrice);
+            const byDate = req.query.ByDate;
+            const search = req.query.search;
 
             let query = {};
             let sort = {};
@@ -61,12 +63,22 @@ async function run() {
                 sort.price = -1;
             }
 
+            if (byDate === "newest") {
+                sort.createdAt = -1;
+            } else if (byDate === "oldest") {
+                sort.createdAt = 1;
+            }
+
             if (!isNaN(minPrice) && !isNaN(maxPrice)) {
                 query.price = { $gte: minPrice, $lte: maxPrice };
             } else if (!isNaN(minPrice)) {
                 query.price = { $gte: minPrice };
             } else if (!isNaN(maxPrice)) {
                 query.price = { $lte: maxPrice };
+            }
+
+            if (search) {
+                query.productName = { $regex: search, $options: "i" }; // Case-insensitive search
             }
 
             const result = await allLaptops
@@ -83,6 +95,7 @@ async function run() {
             const brand = req.query.brand;
             const minPrice = parseFloat(req.query.minPrice);
             const maxPrice = parseFloat(req.query.maxPrice);
+            const search = req.query.search;
 
             let query = {};
 
@@ -99,6 +112,10 @@ async function run() {
                 query.price = { $gte: minPrice };
             } else if (!isNaN(maxPrice)) {
                 query.price = { $lte: maxPrice };
+            }
+
+            if (search) {
+                query.productName = { $regex: search, $options: "i" }; // Case-insensitive search
             }
 
             const count = await allLaptops.countDocuments(query);
